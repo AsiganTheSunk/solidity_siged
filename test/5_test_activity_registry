@@ -1,0 +1,90 @@
+
+const activityRegistry = artifacts.require("ActivityRegistry");
+require('chai/register-should');  // Using Should style
+
+
+contract('ActivityRegistry', (accounts)  => {
+    let admin_address = accounts[0]
+    let operator_address = accounts[1]
+    let random_address = accounts[2]
+
+    before(async () => {
+        tokenActivityRegistry = await activityRegistry.deployed()
+    })
+
+    describe('Add Activity To Registry', async() => {
+        it('It properly adds a new entry in to the tokenActivityRegistry', async() => {
+            try {
+                var expectedTokenHash_0 = '0x1adb96418a49881e983c0485b5ca05990b6fb32519dfeb5550be9b78472a7e66'
+                var expectedOperationType_0 = 'WriteRequest'
+                var expectedEvidenceHash_0 = 'None'
+                var expectedOperationStatus_0 = true
+                var expectedBlockNumber_0 = 1
+                
+                var expectedTokenHash_1 = '0x561a0ff3464054618a3779918ba9d789c45d60465e06fc23c9ea45a19afe1a2a'
+                var expectedOperationType_1 = 'ReadRequest'
+                var expectedEvidenceHash_1 = '12345abcde'
+                var expectedOperationStatus_1 = true
+                var expectedBlockNumber_1 = 2
+                
+                await tokenActivityRegistry.addEntryToActivityIndex(expectedTokenHash_0, expectedOperationType_0, expectedEvidenceHash_0, expectedOperationStatus_0, expectedBlockNumber_0)
+                await tokenActivityRegistry.addEntryToActivityIndex(expectedTokenHash_1, expectedOperationType_1, expectedEvidenceHash_1, expectedOperationStatus_1, expectedBlockNumber_1)
+
+                //  assert.equal(expectedResponse, currentResponse.valueOf(), '    - UserRegistry Contract should return true')
+            } catch(err) {
+                console.log(err.message)
+            }
+        })
+    })  
+
+    describe('Get Activity From Registry Test', async() => {
+        it('It properly gets an entry from the tokenActivityRegistry', async() => {
+            try {
+                var expectedTokenHash_0 = '0x1adb96418a49881e983c0485b5ca05990b6fb32519dfeb5550be9b78472a7e66'
+                var expectedOperationType_0 = 'WriteRequest'
+                var expectedEvidenceHash_0 = 'None'
+                var expectedOperationStatus_0 = true
+                var expectedBlockNumber_0 = 1
+                
+                var expectedTokenHash_1 = '0x561a0ff3464054618a3779918ba9d789c45d60465e06fc23c9ea45a19afe1a2a'
+                var expectedOperationType_1 = 'ReadRequest'
+                var expectedEvidenceHash_1 = '12345abcde'
+                var expectedOperationStatus_1 = true
+                var expectedBlockNumber_1 = 2
+
+                await tokenActivityRegistry.addEntryToActivityIndex(expectedTokenHash_0, expectedOperationType_0, expectedEvidenceHash_0, expectedOperationStatus_0, expectedBlockNumber_0)
+                await tokenActivityRegistry.addEntryToActivityIndex(expectedTokenHash_1, expectedOperationType_1, expectedEvidenceHash_1, expectedOperationStatus_1, expectedBlockNumber_1)
+
+                current_mapping = await tokenActivityRegistry.getMappingActivityValue()
+                var currentTokenHash_0 =  current_mapping[0]['tokenHash']   
+                var currentOperationType_0 = current_mapping[0]['operationType']    
+                var currentEvidenceHash_0 = current_mapping[0]['evidenceHash']
+                var currentOperationStatus_0 = current_mapping[0]['operationStatus']
+                var currentBlockNumber_0 = current_mapping[0]['blockNumber']
+                
+                
+                assert.equal(expectedTokenHash_0, currentTokenHash_0, '    - SigedToken Contract should have a ')
+                assert.equal(expectedOperationType_0, currentOperationType_0, '    - SigedToken Contract should have a ')
+                assert.equal(expectedEvidenceHash_0, currentEvidenceHash_0, '    - SigedToken Contract should have a ')
+                assert.equal(expectedOperationStatus_0, currentOperationStatus_0, '    - SigedToken Contract should have a ')
+                assert.equal(expectedBlockNumber_0, currentBlockNumber_0, '    - SigedToken Contract should have a ')
+
+                var currentTokenHash_1 =  current_mapping[1]['tokenHash']   
+                var currentEvidenceHash_1 = current_mapping[1]['evidenceHash']
+                var currentOperationStatus_1 = current_mapping[1]['operationStatus']
+                var currentBlockNumber_1 = current_mapping[1]['blockNumber']
+                var currentOperationType_1 = current_mapping[1]['operationType']
+
+                assert.equal(expectedTokenHash_1, currentTokenHash_1, '    - SigedToken Contract should have a ')
+                assert.equal(expectedOperationType_1, currentOperationType_1, '    - SigedToken Contract should have a ')
+                assert.equal(expectedEvidenceHash_1, currentEvidenceHash_1, '    - SigedToken Contract should have a ')
+                assert.equal(expectedOperationStatus_1, currentOperationStatus_1, '    - SigedToken Contract should have a ')
+                assert.equal(expectedBlockNumber_1, currentBlockNumber_1, '    - SigedToken Contract should have a ')
+
+            } catch(err) {
+                console.log(err)
+            }
+        })
+    })  
+
+})

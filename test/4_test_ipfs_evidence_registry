@@ -1,0 +1,61 @@
+
+const ipfsEvidenceRegistry = artifacts.require("IPFSEvidenceRegistry")
+require('chai/register-should')  // Using Should style
+
+
+contract('IPFSEvidenceRegistry', (accounts)  => {
+    let admin_address = accounts[0]
+    let operator_address = accounts[1]
+    let random_address = accounts[2]
+
+
+    before(async () => {
+        ipfs_evidence_registry = await ipfsEvidenceRegistry.deployed()
+    })
+
+    describe('Deployment Test', async () => {
+        it('It deploys successfully ', async () => {
+            try {
+                console.log("    + [ Address ]: %s", ipfs_evidence_registry.address)
+            } catch(err) {
+                console.log(err.message)
+            }
+        })
+    })
+
+    describe('Add IPFS Evidence To Registry', async() => {
+        it('It properly adds a new entry in to the ipfs_evidence_registry', async() => {
+            try {
+
+                var expectedId = "case_number_001"
+                var expectedEvidenceHash = "01234abcd"
+    
+                console.log("    + [ expectedId ]: %s", expectedId)
+                console.log("    + [ expectedEvidenceHash ]: %s", expectedEvidenceHash)
+    
+                var expectedResponse = true
+                var currentResponse = await ipfs_evidence_registry.addEvidenceToRegistry(expectedId, expectedEvidenceHash)
+
+                assert.equal(expectedResponse, currentResponse.valueOf(), '    - UserRegistry Contract should return true')
+            } catch(err) {
+                console.log(err.message)
+            }
+        })
+    })  
+
+
+    describe('Get Case From Registry', async() => {
+        it('It properly gets an entry from the case_registry', async() => {
+            try {
+                var expectedId = "case_number_001"
+                var expectedEvidenceHash = "01234abcd"
+    
+                console.log("    + [ expectedId ]: %s", expectedId)
+                console.log("    + [ expectedEvidenceHash ]: %s", expectedEvidenceHash)
+    
+            } catch(err) {
+                console.log(err.message)
+            }
+        })
+    }) 
+})

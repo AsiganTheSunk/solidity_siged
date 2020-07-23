@@ -1,0 +1,46 @@
+    // Enum Definition for Operation Type
+    enum OperationTypes {RequestNone, RequestWrite, RequestRead}
+    OperationTypes operation_type;
+    OperationTypes constant defaultType = OperationTypes.RequestNone;
+
+    function setRequestNone() public {
+        operation_type = OperationTypes.RequestNone;
+    }
+
+    function setRequestWrite() public {
+        operation_type = OperationTypes.RequestNone;
+    }
+    
+    function setRequestRead() public {
+        operation_type = OperationTypes.RequestNone;
+    }
+    
+    function getOperationType() public view returns (OperationTypes) {
+        return operation_type;
+    }
+
+    function getDefaultType() public pure returns (uint) {
+        return uint(defaultType);
+    }
+
+
+    // function isCaseReferenceCurrentlyClosed(string memory _case_reference) public returns (bool){
+    //     if(closed_case_references[_case_reference]){
+    //         return true;
+    //     }
+    //     return false;
+    // }
+
+    // function isCaseReferenceCurrentlyOpen(string memory _case_reference) public returns (bool){
+    //     if(case_references[_case_reference]){
+    //         return true;
+    //     }
+    //     return false;
+    // }
+
+    // function isOperator(address _from) public returns (bool){
+    //     if(user_operators[_from]){
+    //         return true;
+    //     }
+    //     return false;
+    // }

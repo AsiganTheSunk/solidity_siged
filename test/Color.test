@@ -1,0 +1,119 @@
+const Color = artifacts.require('./Color.sol');
+require('chai/register-should');  // Using Should style
+
+contract('Color', (accounts) => {
+  let admin_address = accounts[0]
+  let operator_address = accounts[1]
+  let random_address = accounts[2]
+
+  let contract
+
+  before(async () => {
+    contract = await Color.deployed()
+  })
+
+    describe('SGDTK Deployment', async () => {
+    it('It deploys successfully ', async () => {
+        try {
+            const address = contract.address
+            assert.notEqual(address, 0x0)
+            assert.notEqual(address, '')
+            assert.notEqual(address, null)
+            assert.notEqual(address, undefined)
+            console.log("    + [ Address ]: %s", address)
+        } catch(err) {
+            console.log(err.message)
+        }
+    })
+  })
+
+    it('Has a name', async () => {
+      const name = await contract.name()
+      assert.equal(name, 'SigedToken')
+      console.log("    + [ Name ]: %s", name)
+    })
+
+    it('Has a symbol', async () => {
+      const symbol = await contract.symbol()
+      assert.equal(symbol, 'SGDTK')
+      console.log("    + [ Symbol ]: %s", symbol)
+    })
+
+    describe('SGDTK Minting', async () => {
+
+    it('Creates a new token', async () => {
+      const result = await contract.mint('#EC058E', random_address)
+      const totalSupply = await contract.totalSupply()
+      // SUCCESS
+      assert.equal(totalSupply, 1)
+      const event = result.logs[0].args
+      assert.equal(event.tokenId.toNumber(), 1, 'id is correct')
+      assert.equal(event.from, '0x0000000000000000000000000000000000000000', 'from is correct')
+      assert.equal(event.to, accounts[0], 'to is correct')
+
+      // FAILURE: cannot mint same color twice 
+      // await contract.mint('#5386E4', random_address)
+    })
+  })  
+
+  describe('SGDTK EmitedData', async () => {
+    it('List current emisions', async () => {
+      // Mint 3 more tokens
+      await contract.mint('#5386E4', random_address)
+      await contract.mint('#FFFFFF', random_address)
+      let aux = await contract.mint('#000000', random_address)
+      const event = aux.logs[0].args
+      console.log(event)
+      const totalSupply = await contract.totalSupply()
+      console.log("    + [ TotalSupply ]: %s", totalSupply)
+
+      let emisionData = await contract.getEmisionData()
+
+      let _tokenData
+      let _emisionData = []
+      
+      for (var i = 1; i <= totalSupply; i++) {
+        _tokenData = await contract.getEmisionDataFromId(i - 1)
+        console.log("    + [ Hash %d ]: %s", i-1, _tokenData[2])
+        _emisionData.push(_tokenData[2])
+      }
+      
+      let expecetedIdentifier0 = await contract.getHash('#EC058E', random_address)
+      let expecetedIdentifier1 = await contract.getHash('#5386E4', random_address)
+      let expecetedIdentifier2 = await contract.getHash('#FFFFFF', random_address)
+      let expecetedIdentifier3 = await contract.getHash('#000000', random_address)
+      
+//       let expectedValues = [
+//         '0x1adb96418a49881e983c0485b5ca05990b6fb32519dfeb5550be9b78472a7e66',
+//         '0x561a0ff3464054618a3779918ba9d789c45d60465e06fc23c9ea45a19afe1a2a',
+//         '0x7262344d3773441db9d7cfc424c3a72038535ded55594ab49ff9e4fa5665f181',
+//         '0xe6914625a91dcfcc617127f3f8e5bc021d97205f95ade09be4126c43091f1f35'
+//       ]
+//       assert.equal(_emisionData.join(','), expectedValues.join(','))
+      
+      let receipt = await contract.ownerOf(1)
+      console.log(receipt) 
+      let receipt1 = await contract.safeTransferFrom(admin_address, random_address, 1)
+      console.log(receipt1)
+      let receipt2 = await contract.balanceOf(random_address)
+      console.log(receipt2.toNumber())
+      let receipt3 = await contract.ownerOf(1)
+      console.log(receipt3) 
+      let approved = await contract.approve(admin_address, 1, { from: random_address })
+      console.log(approved)
+      let receipt4 = await contract.safeTransferFrom(random_address, admin_address, 1)
+      console.log(receipt4)
+      let receipt5 = await contract.ownerOf(1)
+      console.log(receipt5)
+
+    })
+  })
+  
+  
+    describe('SGDTK Minting', async () => {
+
+    it('Creates a new token', async () => {
+    })
+  })  
+
+})
