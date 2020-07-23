@@ -7,11 +7,14 @@ var sigedToken = artifacts.require("SigedToken");
 // Deployment Artifacts for the SigedService Libraries
 var caseRegistry = artifacts.require("CaseRegistry");
 var userRegistry = artifacts.require("UserRegistry");
+var ipfsRegistry = artifacts.require("IPFSRegistry");
 
 module.exports = async function(deployer, accounts, [owner]) {
     deployer.deploy(userRegistry);
     deployer.deploy(caseRegistry);
-    
+    deployer.deploy(ipfsRegistry);
+
+    deployer.link(ipfsRegistry, sigedService);
     deployer.link(userRegistry, sigedService);
     deployer.link(caseRegistry, sigedService);
     

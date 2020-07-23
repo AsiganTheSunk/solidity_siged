@@ -1,8 +1,9 @@
 const sigedService = artifacts.require("SigedService")
-const userRegistry = artifacts.require("UserRegistry");
+const userRegistry = artifacts.require("UserRegistry")
 const caseRegistry = artifacts.require("CaseRegistry")
 const sigedToken = artifacts.require("SigedToken")
-
+const ipfsRegistry = artifacts.require("IPFSRegistry")
+const truffleAssert = require('truffle-assertions')
 require('chai/register-should')  // Using Should style
 require('web3')
 
@@ -15,6 +16,7 @@ contract('SigedService', (accounts)  => {
         try {
             userRegistryInstance = await userRegistry.deployed()
             caseRegistryInstance = await caseRegistry.deployed()
+            ipfsRegistryInstance = await ipfsRegistry.deployed()
             sigedServiceInstance = await sigedService.deployed()
             sigedTokenInstance = await sigedToken.deployed()
 
@@ -23,7 +25,7 @@ contract('SigedService', (accounts)  => {
         }
     })
 
-    describe('Siged Service Deployment & Components', async () => {
+    describe('Service Component Deployments', async () => {
         
         it('It successfully deploys the UserRegistry Library', async () => {
             try {
@@ -32,7 +34,7 @@ contract('SigedService', (accounts)  => {
                 assert.notEqual(userRegistryAddress, '')
                 assert.notEqual(userRegistryAddress, null)
                 assert.notEqual(userRegistryAddress, undefined)
-                console.log("      [ UserRegistry Library Address ]: %s", userRegistryAddress)
+                console.log("      [ UserRegistry Address ]: %s", userRegistryAddress)
 
             } catch(err) {
                 console.log(err.message)
@@ -46,14 +48,28 @@ contract('SigedService', (accounts)  => {
                 assert.notEqual(caseRegistryAddress, '')
                 assert.notEqual(caseRegistryAddress, null)
                 assert.notEqual(caseRegistryAddress, undefined)
-                console.log("      [ caseRegistry Library Address ]: %s", caseRegistryAddress)
+                console.log("      [ CaseRegistry Address ]: %s", caseRegistryAddress)
 
             } catch(err) {
                 console.log(err.message)
             }
         })
 
-        it('It successfully deploys the SigedToken Contract', async () => {
+         it('It successfully deploys the IPFSRegistry Library', async () => {
+            try {
+                const ipfsRegistryAddress = userRegistryInstance.address
+                assert.notEqual(ipfsRegistryAddress, 0x0)
+                assert.notEqual(ipfsRegistryAddress, '')
+                assert.notEqual(ipfsRegistryAddress, null)
+                assert.notEqual(ipfsRegistryAddress, undefined)
+                console.log("      [ IPFSRegistry Address ]: %s", ipfsRegistryAddress)
+
+            } catch(err) {
+                console.log(err.message)
+            }
+        })
+        
+        it('It successfully deploys the TokenManager Contract', async () => {
             try {
 
                 const sigedTokenAddress = sigedTokenInstance.address
@@ -61,7 +77,7 @@ contract('SigedService', (accounts)  => {
                 assert.notEqual(sigedTokenAddress, '')
                 assert.notEqual(sigedTokenAddress, null)
                 assert.notEqual(sigedTokenAddress, undefined)
-                console.log("      [ SigedService Contract Address ]: %s", sigedTokenAddress)
+                console.log("      [ TokenManager Address ]: %s", sigedTokenAddress)
 
             } catch(err) {
                 console.log(err.message)
@@ -76,7 +92,7 @@ contract('SigedService', (accounts)  => {
                 assert.notEqual(sigedServiceAddress, '')
                 assert.notEqual(sigedServiceAddress, null)
                 assert.notEqual(sigedServiceAddress, undefined)
-                console.log("      [ SigedService Contract Address ]: %s", sigedServiceAddress)
+                console.log("      [ SigedService Address ]: %s", sigedServiceAddress)
 
             } catch(err) {
                 console.log(err.message)
@@ -85,7 +101,7 @@ contract('SigedService', (accounts)  => {
     })
 
     // address id, string memory name, string memory surname, string memory dni - USER REGISTRY
-    describe('Siged Service User Registry' , async() => {
+    describe('UserRegistry Library' , async() => {
         it('It succesfully adds a new user to the system', async() => {
             try {
                 var userId = operator_address
@@ -168,7 +184,7 @@ contract('SigedService', (accounts)  => {
     })    
 
     // string memory id, string memory name, string memory description - CASE REGISTRY
-    describe('Siged Service Case Registry' , async() => {
+    describe('CaseRegistry Library' , async() => {
 
         it('It succesfully adds a new case to the system', async() => {
             try {
@@ -245,7 +261,7 @@ contract('SigedService', (accounts)  => {
         })  
     })
 
-    describe('Siged Service Token' , async() => {
+    describe('TokenManager Contract' , async() => {
         it('Has a name', async () => {
             const name = await sigedTokenInstance.name()
             assert.equal(name, 'SigedToken')
@@ -275,12 +291,7 @@ contract('SigedService', (accounts)  => {
 
         it('It succesfully reverts the duplicate emision of a token to the system', async() => {
             try {    
-                // FAILURE: cannot mint same color twice 
-                const result = await sigedServiceInstance.emitToken('#EC058E', random_address)
-                const totalSupply = await sigedTokenInstance.totalSupply()
-                // SUCCESS
-                assert.equal(totalSupply, 1)
-                assert.equal(err.message, 'Returned error: VM Exception while processing transaction: revert')
+                await truffleAssert.reverts(sigedServiceInstance.emitToken('#EC058E', random_address), "Returned error: VM Exception while processing transaction: revert");
             } catch(err) {
                 console.log(err.message)
             }
@@ -401,4 +412,16 @@ contract('SigedService', (accounts)  => {
             }
         })    
     })
+    
+    describe('IPFSManager Contract' , async() => {
+        it('It succesfully registers a new ipfs entry', async () => {
+        })
+        it('It succesfully list all the ipfs entries', async () => {
+        })
+        it('It succesfully retrieves a ipfs entry by hash', async () => {
+        })
+        it('It succesfully retrieves a ipfs group from a casereference', async () => {
+        })
+    })
+      
 })

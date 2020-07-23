@@ -6,19 +6,17 @@ pragma experimental ABIEncoderV2;
  * @title Imports
  * Import SigedToken Module from CustomToken.sol
  * Import Ownable Module from cannonical-weth Library
- * Import SafeMath Module from openzeppelin Library
  */
 import "./erc721/SigedToken.sol";
 import "./managers/UserManager.sol";
 import "./managers/CaseManager.sol";
 import "./managers/IPFSManager.sol";
-
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title SigedService Params
  */
-contract SigedService is Ownable, UserManager, CaseManager {
+contract SigedService is Ownable, UserManager, CaseManager, IPFSManager {
 
     SigedToken public token;
     
