@@ -8,7 +8,7 @@ pragma experimental ABIEncoderV2;
  * Import Ownable Module from cannonical-weth Library
  * Import SafeMath Module from openzeppelin Library
  */
-import "./registry/IPFSRegistry.sol";
+import "../registry/IPFSRegistry.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 

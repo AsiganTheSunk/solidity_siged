@@ -288,20 +288,15 @@ contract('SigedService', (accounts)  => {
 
         it('It succesfully list current token emisions on the system', async () => {
             try {    
-                // Mint 4 more tokens
-                var random_user_address = '0x8A72f30E348b95Daa9747f9e41a4587FF8ad5085'
+                // Mint 3 more tokens
                 await sigedServiceInstance.emitToken('#5386E4', random_address)
                 await sigedServiceInstance.emitToken('#FFFFFF', random_address)
                 await sigedServiceInstance.emitToken('#000000', random_address)
-
-                assert.equal(4, totalSupply)
-                var totalSupply = await sigedTokenInstance.totalSupply()
-                // console.log("      + [ TotalSupply ]: %s", totalSupply)
-            
-                var emisionData = await sigedTokenInstance.getEmisionData()
                 
-                // asertion here
-               
+                var totalSupply = await sigedTokenInstance.totalSupply()
+                assert.equal(4, totalSupply)
+            
+                //var emisionData = await sigedTokenInstance.getEmisionData()               
             } catch(err) {
                 console.log(err.message)
             }

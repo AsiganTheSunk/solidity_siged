@@ -8,7 +8,7 @@ pragma experimental ABIEncoderV2;
  * Import Ownable Module from cannonical-weth Library
  */
 
-import "./registry/UserRegistry.sol";
+import "../registry/UserRegistry.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 /**
  * @title UserManager

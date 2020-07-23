@@ -10,7 +10,7 @@ pragma experimental ABIEncoderV2;
  * Import Ownable Module from cannonical-weth Library
  */
 
-import "./registry/CaseRegistry.sol";
+import "../registry/CaseRegistry.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**

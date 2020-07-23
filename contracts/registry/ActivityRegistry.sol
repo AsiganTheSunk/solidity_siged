@@ -9,14 +9,12 @@ pragma experimental ABIEncoderV2;
  * Import SafeMath Module from openzeppelin Library
  */
 
-import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 /**
  * @title IPFSEvidenceRegistry Params
  * SigedToken - Value Defining the Current SigedToken Taxonomy for the System.
  */
 library ActivityRegistry {
-    using SafeMath for uint;
 
     struct ActivityReference {
         bytes32 tokenHash;

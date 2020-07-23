@@ -8,10 +8,10 @@ pragma experimental ABIEncoderV2;
  * Import Ownable Module from cannonical-weth Library
  * Import SafeMath Module from openzeppelin Library
  */
-import "./SigedToken.sol";
-import "./UserManager.sol";
-import "./CaseManager.sol";
-import "./IPFSManager.sol";
+import "./erc721/SigedToken.sol";
+import "./managers/UserManager.sol";
+import "./managers/CaseManager.sol";
+import "./managers/IPFSManager.sol";
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
