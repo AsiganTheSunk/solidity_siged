@@ -12,8 +12,9 @@ pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+
 /**
- * @title CaseRegistry Params
+ * @title TokenRegistry Params
  */
 library TokenRegistry {
     struct TokenReference {
@@ -57,18 +58,17 @@ library TokenRegistry {
 
     function _getTokenReferences(TokenReferenceRegistryIndex storage self) public view returns (TokenReference[] memory) {
         TokenReference[] memory _tokenReferenceList = new TokenReference[](self.tokenRegistryIndex);
-
         for(uint i = 0; i < self.tokenRegistryIndex; i++) {
             _tokenReferenceList[i] = self.tokenReferenceData[i];
         }
         return _tokenReferenceList;
     }
 
-    function getTokenByIndex(TokenReferenceRegistryIndex storage self, uint index) public view returns (TokenReference memory) {
-        TokenReference[] memory _token_reference_list = new TokenReference[](self.tokenRegistryIndex);
+    function _getTokenByIndex(TokenReferenceRegistryIndex storage self, uint index) public view returns (TokenReference memory) {
+        TokenReference[] memory _tokenReferenceList = new TokenReference[](self.tokenRegistryIndex);
         for(uint i = 0; i < self.tokenRegistryIndex; i++) {
-            _token_reference_list[i] = self.tokenReferenceData[i];
+            _tokenReferenceList[i] = self.tokenReferenceData[i];
         }
-        return _token_reference_list[index];
+        return _tokenReferenceList[index - 1];
     }
 }

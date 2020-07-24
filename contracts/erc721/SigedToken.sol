@@ -89,7 +89,7 @@ contract SigedToken is ERC721, Ownable {
     * @param tokenId address of the user operator
     * @return string, address, bytes32, bool
     */
-//   function getEmisionDataFromId (uint tokenId) public view returns (string memory, address, bytes32, bool) {
-//     return (emitedTokens[tokenId].caseReference, emitedTokens[tokenId].userOperator,  emitedTokens[tokenId].tokenHash, emitedTokens[tokenId].status);
-//   }
+  function getEmisionDataFromId(uint tokenId) public view returns (TokenRegistry.TokenReference  memory) {
+    return tokenReferenceRegistry._getTokenByIndex(tokenId);
+  }
 }

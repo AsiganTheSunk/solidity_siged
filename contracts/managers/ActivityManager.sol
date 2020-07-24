@@ -50,7 +50,7 @@ contract ActivityManager is Ownable {
      * @notice Gets all the token data stored within the ActivityLogRegistry
      * @return list of token metadata
      */
-    function getTokenActivityLog(bytes32 tokenHash) public view returns (ActivityLogRegistry.ActivityReference [] memory) {      
+    function getTokenActivityLogByHash(bytes32 tokenHash) public view returns (ActivityLogRegistry.ActivityReference [] memory) {      
         return _activityLogRegistry._getTokenFromActivityLogByTokenHash(tokenHash);
     }
 }

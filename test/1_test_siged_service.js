@@ -69,7 +69,7 @@ contract('SigedService', (accounts)  => {
             }
         })
         
-        it('It successfully deploys the TokenManager Contract', async () => {
+        it('It successfully deploys the SigedToken Contract', async () => {
             try {
 
                 const sigedTokenAddress = sigedTokenInstance.address
@@ -77,7 +77,7 @@ contract('SigedService', (accounts)  => {
                 assert.notEqual(sigedTokenAddress, '')
                 assert.notEqual(sigedTokenAddress, null)
                 assert.notEqual(sigedTokenAddress, undefined)
-                console.log("      [ TokenManager Address ]: %s", sigedTokenAddress)
+                console.log("      [ SigedToken Address ]: %s", sigedTokenAddress)
 
             } catch(err) {
                 console.log(err.message)
@@ -271,7 +271,34 @@ contract('SigedService', (accounts)  => {
             const symbol = await sigedTokenInstance.symbol()
             assert.equal(symbol, 'SGDTK')
         })
+        
+        it('It succesfully creates the proper hash for a token emisions on the system', async () => {
+            try {
+                var random_user_address = '0x8A72f30E348b95Daa9747f9e41a4587FF8ad5085'
+                var expecetedIdentifier0 = await sigedTokenInstance.getHash('#EC058E', random_user_address)
+                var expecetedIdentifier1 = await sigedTokenInstance.getHash('#5386E4', random_user_address)
+                var expecetedIdentifier2 = await sigedTokenInstance.getHash('#FFFFFF', random_user_address)
+                var expecetedIdentifier3 = await sigedTokenInstance.getHash('#000000', random_user_address)
+                
+                var emisionDataHash = [
+                    expecetedIdentifier0, 
+                    expecetedIdentifier1, 
+                    expecetedIdentifier2, 
+                    expecetedIdentifier3
+                ]
+                var expectedValues = [
+                    '0x007ba88dde3f8773a75e245df86a5dff6bbeee4bbf3b2e3a05b88940f87801b6',
+                    '0x00cd0f9f0adf5ffa53359f0a6c1b784e6787b93b92fbf716ab3cc5cb837fe5dc',
+                    '0x615169c62688962173f34160fc68c27750fe3369a975b9ed0cdddb1d66232ca7',
+                    '0xcfe5c5bdb9f74ff75084f2513c38b375548a508ceadec9218566204a5b625180'
+                ]
 
+                assert.equal(emisionDataHash.join(','), expectedValues.join(','))
+            } catch(err) {
+                console.log(err.message)
+            }
+        })
+        
         it('It succesfully emits a new token to the system', async() => {
             try {
                 const result = await sigedServiceInstance.emitToken('#EC058E', random_address)
@@ -307,46 +334,24 @@ contract('SigedService', (accounts)  => {
                 var totalSupply = await sigedTokenInstance.totalSupply()
                 assert.equal(4, totalSupply)
             
-                //var emisionData = await sigedTokenInstance.getEmisionData()               
+                var tokenReferencesResult = await sigedTokenInstance.getEmisionData()
+//                 console.log(tokenReferencesResult)             
             } catch(err) {
                 console.log(err.message)
             }
         })  
-        it('It succesfully creates the proper hash for a token emisions on the system', async () => {
-            try {
-                var random_user_address = '0x8A72f30E348b95Daa9747f9e41a4587FF8ad5085'
-                var expecetedIdentifier0 = await sigedTokenInstance.getHash('#EC058E', random_user_address)
-                var expecetedIdentifier1 = await sigedTokenInstance.getHash('#5386E4', random_user_address)
-                var expecetedIdentifier2 = await sigedTokenInstance.getHash('#FFFFFF', random_user_address)
-                var expecetedIdentifier3 = await sigedTokenInstance.getHash('#000000', random_user_address)
-                
-                var emisionDataHash = [
-                    expecetedIdentifier0, 
-                    expecetedIdentifier1, 
-                    expecetedIdentifier2, 
-                    expecetedIdentifier3
-                ]
-                var expectedValues = [
-                    '0x007ba88dde3f8773a75e245df86a5dff6bbeee4bbf3b2e3a05b88940f87801b6',
-                    '0x00cd0f9f0adf5ffa53359f0a6c1b784e6787b93b92fbf716ab3cc5cb837fe5dc',
-                    '0x615169c62688962173f34160fc68c27750fe3369a975b9ed0cdddb1d66232ca7',
-                    '0xcfe5c5bdb9f74ff75084f2513c38b375548a508ceadec9218566204a5b625180'
-                ]
-
-                assert.equal(emisionDataHash.join(','), expectedValues.join(','))
-            } catch(err) {
-                console.log(err.message)
-            }
-        })
 
         it('It succesfully gets the data of a token emited using the id on the system ', async() => {
             try {
                 var totalSupply = await sigedTokenInstance.totalSupply()
                 var _tokenData
-                for (var i = 1; i <= totalSupply; i++) {
-                    _tokenData = await sigedTokenInstance.getEmisionDataFromId(i - 1)
-                    console.log("      [ ID ]: %d [ Hash ]: %s", i-1, _tokenData[2])
-                }
+
+                _tokenData = await sigedTokenInstance.getEmisionDataFromId(1)
+//                 console.log(_tokenData)
+//                 for (var i = 1; i <= totalSupply; i++) {
+//                     _tokenData = await sigedTokenInstance.getEmisionDataFromId(i - 1)
+//                     console.log("      [ ID ]: %d [ Hash ]: %s", i-1, _tokenData[2])
+//                 }
             } catch(err) {
                 console.log(err.message)
             }
@@ -355,21 +360,21 @@ contract('SigedService', (accounts)  => {
         it('It succesfully checks the ownership of a token emited on the system', async() => {
             try {
                 var tokenOwner = await sigedTokenInstance.ownerOf(1)
-                console.log(tokenOwner)
+//                 console.log(tokenOwner)
                 //assert.equal(random_address, sigedServiceInstance.address)
                 // await sigedTokenInstance.setApprovalForAll(admin_address, true)
                 var receipt = await sigedTokenInstance.balanceOf(random_address)
-                console.log(receipt.toNumber())
+//                 console.log(receipt.toNumber())
                 await sigedTokenInstance.approve(admin_address, 1,  { from: random_address })
                 await sigedTokenInstance.safeTransferFrom(random_address, admin_address, 1)
 
                 var receipt2 = await sigedTokenInstance.balanceOf(random_address)
-                console.log(receipt2.toNumber())
+//                 console.log(receipt2.toNumber())
 
                 var currentOwner = await sigedTokenInstance.ownerOf(1)
-                console.log(currentOwner, random_address)
-                console.log(admin_address, operator_address, random_address)
-                assert.equal(random_address, currentOwner)
+//                 console.log(currentOwner, random_address)
+//                 console.log(admin_address, operator_address, random_address)
+                assert.equal(admin_address, currentOwner)
 
 
                // TRANFER BACK EXAMPLE
@@ -385,30 +390,42 @@ contract('SigedService', (accounts)  => {
         })
     }) 
     describe('ActivityRegistry Library' , async() => {        
-        it('It succesfully checks the balance of tokens emited on the system', async() => {
+        it('It registers a new entry in the ActivityLog within the system', async() => {
             try {
-                var tokenReferencesResult = sigedTokenInstance.getEmisionData()
+                var tokenHash = '0x1adb96418a49881e983c0485b5ca05990b6fb32519dfeb5550be9b78472a7e66'
+                var operationType = 'WriteRequest'
+                var evidenceHash = 'None'
+                var operationStatus = true
+                var blockNumber = 1
+            
+                await sigedServiceInstance.addTokenActivityLog(tokenHash, operationType, evidenceHash, operationStatus, blockNumber)
+
             } catch(err) {
                 console.log(err.message)
             }
         })  
 
-        it('It succesfully transfers a token emited on the system', async() => {
+        it('I succesfully recovers information regarding a token via tokenHash', async() => {
             try {
+                var tokenHash = '0x1adb96418a49881e983c0485b5ca05990b6fb32519dfeb5550be9b78472a7e66'
+                var result = await sigedServiceInstance.getTokenActivityLogByHash(tokenHash)
+//                 console.log(result)
             } catch(err) {
                 console.log(err.message)
             }
         })  
 
-        it('It succesfully transfers back a token emited on the system', async() => {
+        it('It succesfully recovers all the ActivityLog', async() => {
             try {
-            } catch(err) {
-                console.log(err.message)
-            }
-        })  
+                var tokenHash1 = '0x561a0ff3464054618a3779918ba9d789c45d60465e06fc23c9ea45a19afe1a2a'
+                var operationType1 = 'ReadRequest'
+                var evidenceHash1 = '12345abcde'
+                var operationStatus1 = true
+                var blockNumber1 = 2
 
-        it('It succesfully register a new entry in the TokenRegistry', async() => {
-            try {
+                await sigedServiceInstance.addTokenActivityLog(tokenHash1, operationType1, evidenceHash1, operationStatus1, blockNumber1)
+                var result = await sigedServiceInstance.getTokenActivityLog()
+//                 console.log(result)
             } catch(err) {
                 console.log(err.message)
             }

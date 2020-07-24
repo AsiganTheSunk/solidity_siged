@@ -11,15 +11,15 @@ import "./erc721/SigedToken.sol";
 import "./managers/UserManager.sol";
 import "./managers/CaseManager.sol";
 import "./managers/IPFSManager.sol";
+import "./managers/ActivityManager.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-
+import "./registry/TokenRegistry.sol";
 /**
  * @title SigedService Params
  */
-contract SigedService is Ownable, UserManager, CaseManager, IPFSManager {
-
+contract SigedService is Ownable, UserManager, CaseManager, IPFSManager, ActivityManager {
     SigedToken public token;
-    
+    using TokenRegistry for TokenRegistry.TokenReference;
     /**
       * Events to track during SigedService operations
       */
@@ -52,14 +52,14 @@ contract SigedService is Ownable, UserManager, CaseManager, IPFSManager {
     return true;
     }
 
-//     function getEmisionData() public view returns (SigedToken.TokenReference [] memory) {
-//       return token.getEmisionData();
-//     }
+  function getEmisionData() public view returns (TokenRegistry.TokenReference [] memory) {
+    return token.getEmisionData();
+  }
     
-//     function getEmisionDataFromId(uint id) public view returns (string memory, address, bytes32, bool) {
-//       return token.getTokenByIndex(id);
-//     }
-//     
+  function getEmisionDataFromId(uint id) public view returns (TokenRegistry.TokenReference memory) {
+    return token.getEmisionDataFromId(id);
+  }
+     
 //     function requestAdmision() public view returns (bool) {
 //       return true;
 //     }
