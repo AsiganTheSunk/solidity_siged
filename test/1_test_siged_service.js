@@ -261,7 +261,7 @@ contract('SigedService', (accounts)  => {
         })  
     })
 
-    describe('TokenManager Contract' , async() => {
+    describe('SigedToken Contract' , async() => {
         it('Has a name', async () => {
             const name = await sigedTokenInstance.name()
             assert.equal(name, 'SigedToken')
@@ -383,9 +383,11 @@ contract('SigedService', (accounts)  => {
                 console.log(err.message)
             }
         })
-        
+    }) 
+    describe('ActivityRegistry Library' , async() => {        
         it('It succesfully checks the balance of tokens emited on the system', async() => {
             try {
+                var tokenReferencesResult = sigedTokenInstance.getEmisionData()
             } catch(err) {
                 console.log(err.message)
             }
@@ -415,13 +417,54 @@ contract('SigedService', (accounts)  => {
     
     describe('IPFSManager Contract' , async() => {
         it('It succesfully registers a new ipfs entry', async () => {
+            try {
+                var caseReference = "case_number_001"
+                var ipfsHash = "01234abcd"
+                var title = "case_number_001 item 0"
+                var description = "file description 0"
+                var tags = "image"
+
+                var currentResponse = await sigedServiceInstance.addEvidence(caseReference, ipfsHash, title, description, tags)
+                //console.log(currentResponse)
+                //assert.equal(expectedResponse, currentResponse.valueOf(), '    - UserRegistry Contract should return true')
+            } catch(err) {
+                console.log(err.message)
+            }
         })
         it('It succesfully list all the ipfs entries', async () => {
+            try {
+                var caseReference = "case_number_001"
+                var ipfsHash = "01234abca"
+                var title = "case_number_001 item 2"
+                var description = "file description 2"
+                var tags = "file"
+
+                var currentResponse = await sigedServiceInstance.addEvidence(caseReference, ipfsHash, title, description, tags)
+                // console.log(currentResponse)
+
+//                var result = await sigedServiceInstance.getEvidenceData()
+//                console.log(result)
+            } catch(err) {
+                console.log(err)
+            }
         })
         it('It succesfully retrieves a ipfs entry by hash', async () => {
+            try {
+                var ipfsHash = "01234abca"
+                var result = await sigedServiceInstance.getEvidenceDataByHash(ipfsHash)
+                //console.log(result)
+            } catch(err) {
+                console.log(err.message)
+            }
         })
         it('It succesfully retrieves a ipfs group from a casereference', async () => {
+            try {
+                var caseReference = "case_number_001"
+                var result = await sigedServiceInstance.getGroupEvidenceData(caseReference)
+                //console.log(result)
+            } catch(err) {
+                console.log(err.message)
+            }
         })
     })
-      
 })

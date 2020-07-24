@@ -17,11 +17,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  */
 library TokenRegistry {
     struct TokenReference {
-        uint tokenId;
-        bytes32 tokenHash;
-        string caseReference;
-        address userOperator;
-        bool status;
+        uint _tokenId;
+        bytes32 _tokenHash;
+        string _caseReference;
+        address _userOperator;
+        bool _status;
     }
 
     struct TokenReferenceRegistryIndex {
@@ -37,8 +37,8 @@ library TokenRegistry {
 
     function _disableTokenReferenceFromRegistry(TokenReferenceRegistryIndex storage self, bytes32 tokenHash) public returns (bool) {
         for(uint i = 0; i < self.tokenRegistryIndex; i++) {
-            if (self.tokenReferenceData[i].tokenHash == tokenHash) {
-                self.tokenReferenceData[i].status = false;
+            if (self.tokenReferenceData[i]._tokenHash == tokenHash) {
+                self.tokenReferenceData[i]._status = false;
                 return true;
             }
         }
@@ -47,8 +47,8 @@ library TokenRegistry {
 
     function _enableTokenReferenceFromRegistry(TokenReferenceRegistryIndex storage self, bytes32 tokenHash) public returns (bool) {
         for(uint i = 0; i < self.tokenRegistryIndex; i++) {
-            if (self.tokenReferenceData[i].tokenHash == tokenHash) {
-                self.tokenReferenceData[i].status = true;
+            if (self.tokenReferenceData[i]._tokenHash == tokenHash) {
+                self.tokenReferenceData[i]._status = true;
                 return true;
             }
         }

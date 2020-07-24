@@ -8,15 +8,18 @@ var sigedToken = artifacts.require("SigedToken");
 var caseRegistry = artifacts.require("CaseRegistry");
 var userRegistry = artifacts.require("UserRegistry");
 var ipfsRegistry = artifacts.require("IPFSRegistry");
+var activityLogRegistry = artifacts.require("ActivityLogRegistry");
 
 module.exports = async function(deployer, accounts, [owner]) {
     deployer.deploy(userRegistry);
     deployer.deploy(caseRegistry);
     deployer.deploy(ipfsRegistry);
+    deployer.deploy(activityLogRegistry);
 
     deployer.link(ipfsRegistry, sigedService);
     deployer.link(userRegistry, sigedService);
     deployer.link(caseRegistry, sigedService);
+    deployer.link(activityLogRegistry, sigedService);
     
     // Deployment Variables for the SigedService Contract
     deployer.deploy(sigedService, sigedToken.address).then(async () => {

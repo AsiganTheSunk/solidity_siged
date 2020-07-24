@@ -2,11 +2,7 @@
 var sigedToken = artifacts.require("SigedToken");
 var tokenRegistry = artifacts.require("TokenRegistry");
 
-//var activityRegistry = artifacts.require("ActivityRegistry");
-
-module.exports = async function(deployer, accounts, [owner]) {
-  //deployer.deploy(activityRegistry);
-  
+module.exports = async function(deployer, accounts, [owner]) {  
   deployer.deploy(tokenRegistry);
   deployer.link(tokenRegistry, sigedToken);
   deployer.deploy(sigedToken);
